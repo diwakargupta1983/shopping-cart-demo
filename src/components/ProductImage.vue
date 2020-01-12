@@ -41,7 +41,7 @@ export default {
 <style lang="scss" module>
 .image {
   text-align: center;
-  background: $iceBlue;
+  background: $baseGray;
   img {
     height: 100%;
     width: 100%;

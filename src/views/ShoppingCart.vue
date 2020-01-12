@@ -4,18 +4,7 @@
       >Please add items in your cart.</Card
     >
     <div :class="$style.shopingCart" v-else>
-      <Card>
-        <div :class="$style.productList">
-          <span :class="$style.cardHearder"
-            >Items <span>({{ cartItems.length }})</span></span
-          >
-          <span :class="[$style.cardHearder, $style.textCenter]"
-            >Qty ({{ quantity }})</span
-          >
-          <span :class="$style.cardHearder">Price</span>
-        </div>
         <CartItemList />
-      </Card>
       <div>
         <TotalCart />
       </div>

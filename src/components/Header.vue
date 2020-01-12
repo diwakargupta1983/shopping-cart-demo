@@ -7,11 +7,7 @@
         <template v-if="routerPath === '/cart'">
           <fa-icon icon="chevron-left"></fa-icon>
         </template>
-        <template v-else>
-          All products
-        </template>
       </router-link>
-      <h3 v-if="routerPath === '/cart'">Order Summary</h3>
     </div>
 
     <div :class="$style.headerInfo">
@@ -56,7 +52,6 @@ export default {
   },
   methods: {
     goToCart() {
-      alert("asdad");
       this.$router.push({
         path: "/cart"
       });
@@ -81,7 +76,7 @@ export default {
     min-height: 36px;
   }
   a {
-    color: $iceBlue;
+    color: $baseGray;
     opacity: 0.7;
     text-decoration: none;
     &:hover,
