@@ -10,5 +10,8 @@ module.exports = {
         prependData: `@import "~@/assets/scss/_variables.scss"; @import "~@/assets/scss/global.scss";`
       }
     }
-  }
+  },
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/shopping-cart-demo/'
+    : '/'
 };
