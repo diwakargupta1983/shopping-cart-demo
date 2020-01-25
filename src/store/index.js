@@ -12,14 +12,48 @@ export default new Vuex.Store({
     cart: [],
     isLoading: false,
     isError: false,
-    itemAdded: false
+    itemAdded: false,
+    orderByPriceAsc: false,
+    orderByPriceDesc: true,
+    orderByDiscount: false
   },
   mutations: {
     setData(state, data) {
-      console.log(data);
-      state.products = data;
+      localStorage.setItem("products", JSON.stringify(data)); // Cache original product list
+      if(state.orderByPriceAsc === true){
+        state.products = data.sort(function(a, b){
+          return parseFloat(a.price - a.price * (a.discount / 100)) - parseFloat(b.price - b.price * (b.discount / 100));
+        });
+      } else if(state.orderByPriceDesc === true){
+        state.products = data.sort(function(a, b){
+          return parseFloat(b.price - b.price * (b.discount / 100)) - parseFloat(a.price - a.price * (a.discount / 100));
+        });
+      }else if(state.orderByDiscount === true){
+        state.products = data.sort(function(a, b){
+          return parseFloat(a.discount) - parseFloat(b.discount);
+        });
+      }else{
+        state.products = data.sort(function(a, b){
+          return parseFloat(b.price - b.price * (b.discount / 100)) - parseFloat(a.price - a.price * (a.discount / 100));
+        });
+      }
       state.isLoading = false;
       state.isError = false;
+    },
+    sortByPriceHighLow(state){
+      state.orderByPriceAsc = false;
+      state.orderByDiscount = false;
+      state.orderByPriceDesc = true;
+    },
+    sortByPriceLowHigh(state){
+      state.orderByDiscount = false;
+      state.orderByPriceDesc = false;
+      state.orderByPriceAsc = true;
+    },
+    sortByDiscount(state){
+      state.orderByPriceDesc = false;
+      state.orderByPriceAsc = false;
+      state.orderByDiscount = true;
     },
     loadingProduct(state, payload) {
       state.isLoading = payload ? payload : false;
@@ -38,6 +72,13 @@ export default new Vuex.Store({
       product.count = 1;
       state.cart = [...state.cart, product];
       state.itemAdded = true;
+    },
+    applyFilter(state, priceRange) {
+      const parsedProductList = JSON.parse(localStorage.getItem("products"));
+      state.products = parsedProductList.filter(item => {
+        let discountedPrice = item.price - item.price * (item.discount / 100);
+        return discountedPrice >= priceRange[0] && discountedPrice <= priceRange[1];
+      });
     },
     increaseCount(state, payload) {
       state.cart = state.cart.map(item => {
@@ -79,6 +120,21 @@ export default new Vuex.Store({
     },
     ADD_TO_CART({ commit }, payload) {
       commit("addToCart", payload);
+    },
+    APPLY_FILTER({ commit }, payload) {
+      commit("applyFilter", payload);
+    },
+    SORT_BY_PRICE_HIGH_LOW({ commit, getters }) {
+      commit("sortByPriceHighLow");
+      commit("setData", getters.productList);
+    },
+    SORT_BY_PRICE_LOW_HIGH({ commit, getters }) {
+      commit("sortByPriceLowHigh");
+      commit("setData", getters.productList);
+    },
+    SORT_BY_DISCOUNT({ commit, getters }) {
+      commit("sortByDiscount");
+      commit("setData", getters.productList);
     },
     INCREASE_COUNT({ commit }, payload) {
       commit("increaseCount", payload);

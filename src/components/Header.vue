@@ -70,11 +70,8 @@ export default {
   padding: 10px 30px;
   display: grid;
   align-items: center;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 0.05fr 0.08fr;
   box-shadow: $shadow;
-  div {
-    min-height: 36px;
-  }
   a {
     color: $baseGray;
     opacity: 0.7;

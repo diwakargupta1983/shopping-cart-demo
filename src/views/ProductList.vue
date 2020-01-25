@@ -7,26 +7,34 @@
     <Card :class="$style.loadingError" v-if="!isLoading && isError"
       >We are unable to fetch data please try again later</Card
     >
-
-    <div :class="$style.grid" v-if="!isLoading && !isError">
-      <Product
-        v-for="item in productList"
-        v-bind="item"
-        :key="item.id"
-      ></Product>
+    <div :class="$style.wrap">
+      <div :class="$style.leftCol"><Filters /></div>
+      <div>
+        <Sorting />
+        <div :class="$style.grid" v-if="!isLoading && !isError">
+          <Product
+            v-for="item in productList"
+            v-bind="item"
+            :key="item.id"
+          ></Product>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Product from "@/components/Product";
-
+import Filters from "@/components/Filters";
+import Sorting from "@/components/Sorting";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "ProductList",
   components: {
-    Product
+    Product,
+    Filters,
+    Sorting
   },
   computed: {
     ...mapGetters({
@@ -45,6 +53,15 @@ export default {
 </script>
 
 <style lang="scss" module>
+.wrap {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+}
+.leftCol {
+  grid-gap: 30px;
+  display: grid;
+  margin: 30px 0 30px 30px;
+}
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
