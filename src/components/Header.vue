@@ -1,13 +1,12 @@
 <template>
   <div :class="$style.nav">
     <div>
-      <fa-icon :class="$style.logo" icon="star"></fa-icon>
-
-      <router-link to="/">
-        <template v-if="routerPath === '/cart'">
-          <fa-icon icon="chevron-left"></fa-icon>
-        </template>
+      <router-link to="/" v-if="routerPath === '/cart'">
+        <fa-icon :class="$style.logo" icon="star"></fa-icon>
       </router-link>
+      <fa-icon :class="$style.logo" icon="star" v-else></fa-icon>
+
+      
     </div>
 
     <div :class="$style.headerInfo">
@@ -74,12 +73,7 @@ export default {
   box-shadow: $shadow;
   a {
     color: $baseGray;
-    opacity: 0.7;
     text-decoration: none;
-    &:hover,
-    .router-link-exact-active {
-      opacity: 1;
-    }
   }
   .count {
     display: inline-block;
