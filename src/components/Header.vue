@@ -17,7 +17,7 @@
     <Search />
     <div :class="$style.cartbutton" v-if="routerPath !== '/cart'">
       <i :class="$style.count" v-if="cartItems.length">{{
-        cartItems.length
+        totalCount
       }}</i>
       <base-button @click.native="goToCart">
         <fa-icon :class="$style.cart" icon="shopping-cart" color="white"></fa-icon>
@@ -46,6 +46,12 @@ export default {
   computed: {
     routerPath() {
       return this.$route.path;
+    },
+    totalCount(){
+      return this.cartItems.reduce((total, item) => {
+        total += item.count;
+        return total;
+      }, 0);
     },
     ...mapGetters({ cartItems: "cartItems", isAdded: "isAdded" })
   },

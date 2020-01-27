@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     products: [],
     cart: [],
+    noOfitems: 0,
     isLoading: false,
     isError: false,
     itemAdded: false,
@@ -65,8 +66,12 @@ export default new Vuex.Store({
       state.itemAdded = payload ? payload : false;
     },
     addToCart(state, payload) {
-      let isInCart = state.cart.some(item => item.id === payload);
-      if (isInCart) return;
+       let isInCart = state.cart.find(item => item.id === payload);
+       if (isInCart) {
+         isInCart.count += 1;
+         state.itemAdded = true;
+         return;
+      }
 
       let product = state.products.find(item => item.id === payload);
       product.count = 1;
